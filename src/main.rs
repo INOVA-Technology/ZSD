@@ -1,7 +1,11 @@
 use std::io::{self, Write};
 
+use zombie_smack_down::game::Game;
+
 fn main() {
     let mut buffer = String::new();
+
+    let mut game = Game::new();
 
     loop {
         print!("> ");
