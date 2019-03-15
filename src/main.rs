@@ -17,6 +17,7 @@ fn main() {
 
         match input {
             "kick" | "k" => game.kick(),
+            "punch" | "p" => game.punch(),
             "" => (),
             _ => println!("Invalid command"),
         }

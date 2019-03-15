@@ -19,4 +19,10 @@ impl Game {
         let dmg_taken = self.current_zombie.take_damage(dmg);
         println!("The zombie took {} damage!", dmg_taken);
     }
+
+    pub fn punch(&mut self) {
+        let dmg = self.player.punch();
+        let dmg_taken = self.current_zombie.take_damage(dmg);
+        println!("The zombie took {} damage!", dmg_taken);
+    }
 }
