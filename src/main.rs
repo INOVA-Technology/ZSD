@@ -12,9 +12,14 @@ fn main() {
         io::stdout().flush().unwrap();
 
         io::stdin().read_line(&mut buffer).expect("Failed to read line");
+        buffer.make_ascii_lowercase();
         let input = buffer.trim();
 
-        // Do somethin'
+        match input {
+            "kick" | "k" => game.kick(),
+            "" => (),
+            _ => println!("Invalid command"),
+        }
 
         buffer.clear();
     }

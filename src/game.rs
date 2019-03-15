@@ -13,4 +13,10 @@ impl Game {
             current_zombie: Zombie::new(),
         }
     }
+
+    pub fn kick(&mut self) {
+        let dmg = self.player.kick();
+        let dmg_taken = self.current_zombie.take_damage(dmg);
+        println!("The zombie took {} damage!", dmg_taken);
+    }
 }
