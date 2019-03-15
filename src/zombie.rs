@@ -25,4 +25,8 @@ impl Zombie {
         self.health -= dmg_taken;
         dmg_taken
     }
+
+    pub fn is_alive(&self) -> bool {
+        self.health > 0
+    }
 }
