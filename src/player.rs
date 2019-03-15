@@ -17,6 +17,6 @@ impl Player {
     }
 
     pub fn punch(&self) -> u64 {
-        thread_rng().gen_range(3, 4)
+        thread_rng().gen_range(3, 5)
     }
 }
