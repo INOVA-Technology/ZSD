@@ -1,16 +1,22 @@
 use crate::player::Player;
-use crate::zombie::Zombie;
+use crate::zombie::{Zombie, ZombieType};
 
-pub struct Game {
+pub struct Game<I> {
     player: Player,
     current_zombie: Zombie,
+    waves: I,
+    current_wave: &'static ZombieType,
 }
 
-impl Game {
-    pub fn new() -> Game {
+impl<I: Iterator<Item=&'static ZombieType>> Game<I> {
+    pub fn new(mut waves: I) -> Game<I> {
+        let current_wave = waves.next().unwrap();
+        let current_zombie = current_wave.make_zombie();
         Game {
             player: Player::new(),
-            current_zombie: Zombie::new(),
+            current_zombie,
+            waves,
+            current_wave,
         }
     }
 
@@ -25,6 +31,6 @@ impl Game {
 
     fn ko(&mut self) {
         println!("KO!");
-        self.current_zombie = Zombie::new();
+        self.current_zombie = self.current_wave.make_zombie();
     }
 }

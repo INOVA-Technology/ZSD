@@ -1,11 +1,12 @@
 use std::io::{self, Write};
 
 use zombie_smack_down::game::Game;
+use zombie_smack_down::zombie::WAVES;
 
 fn main() {
     let mut buffer = String::new();
 
-    let mut game = Game::new();
+    let mut game = Game::new(WAVES.iter());
 
     loop {
         print!("> ");

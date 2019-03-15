@@ -1,25 +1,39 @@
 use std::cmp::min;
-use std::ops::RangeInclusive;
+use std::ops::Range;
 
-enum ZombieType {
-    Basic,
+use rand::{Rng, thread_rng};
+
+pub struct ZombieType {
+    health: Range<u64>,
+    attack_power: Range<u64>,
+    name: &'static str,
 }
+
+impl ZombieType {
+    pub fn make_zombie(&self) -> Zombie {
+        Zombie {
+            health: thread_rng().gen_range(self.health.start, self.health.end),
+            type_name: self.name,
+            attack_power: self.attack_power.clone(),
+        }
+    }
+}
+
+pub static WAVES: &'static [ZombieType] = &[
+    ZombieType {
+        health: 8..11,
+        attack_power: 4..6,
+        name: "basic",
+    },
+];
 
 pub struct Zombie {
     health: u64,
-    kind: ZombieType,
-    attack_power: RangeInclusive<u64>,
+    type_name: &'static str,
+    attack_power: Range<u64>,
 }
 
 impl Zombie {
-    pub fn new() -> Zombie {
-        Zombie {
-            health: 10,
-            kind: ZombieType::Basic,
-            attack_power: 4..=5,
-        }
-    }
-
     pub fn take_damage(&mut self, dmg: u64) -> u64 {
         let dmg_taken = min(dmg, self.health);
         self.health -= dmg_taken;
