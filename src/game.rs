@@ -1,11 +1,16 @@
+use std::process::exit;
+
 use crate::player::Player;
 use crate::zombie::{Zombie, ZombieType};
+
+const ZOMBIES_PER_WAVE: u64 = 3;
 
 pub struct Game<I> {
     player: Player,
     current_zombie: Zombie,
     waves: I,
     current_wave: &'static ZombieType,
+    zombies_remaining_in_wave: u64,
 }
 
 impl<I: Iterator<Item=&'static ZombieType>> Game<I> {
@@ -17,6 +22,7 @@ impl<I: Iterator<Item=&'static ZombieType>> Game<I> {
             current_zombie,
             waves,
             current_wave,
+            zombies_remaining_in_wave: ZOMBIES_PER_WAVE - 1,
         }
     }
 
@@ -38,6 +44,33 @@ impl<I: Iterator<Item=&'static ZombieType>> Game<I> {
 
     fn ko(&mut self) {
         println!("KO!");
-        self.current_zombie = self.current_wave.make_zombie();
+        self.next_zombie();
+    }
+
+    fn next_zombie(&mut self) {
+        if self.zombies_remaining_in_wave == 0 {
+            self.next_wave();
+        } else {
+            self.current_zombie = self.current_wave.make_zombie();
+            self.zombies_remaining_in_wave -= 1;
+        }
+    }
+
+    fn next_wave(&mut self) {
+        match self.waves.next() {
+            Some(wave) => {
+                self.current_wave = wave;
+                self.zombies_remaining_in_wave = ZOMBIES_PER_WAVE;
+            },
+            None => {
+                self.win_game();
+            }
+        }
+    }
+
+    fn win_game(&self) {
+        println!("You win! Nice");
+        // TODO: don't exit here, but rather make a game status and set it to `Win` or something
+        exit(0);
     }
 }

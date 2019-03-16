@@ -19,7 +19,7 @@ impl ZombieType {
     }
 }
 
-pub static WAVES: &'static [ZombieType] = &[
+pub const WAVES: &'static [ZombieType] = &[
     ZombieType {
         health: 8..11,
         attack_power: 4..6,
