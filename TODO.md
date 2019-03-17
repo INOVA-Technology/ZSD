@@ -3,4 +3,10 @@
  - Don't call `exit` in `Game::win_game`. Set a status and check for it in `main`.
    - `Win`, `GameOver`, and `Playing`?
  - Add xp
- - Add combos
+ - Combos
+   - Charge xp for them
+   - Unlock combos at certain waves
+   - Add more
+ - Add ability to upgrade kick and punch (and combos? Maybe not...)
+ - Add a way to save/restore the game (~/.zsd_save?)
+ - Readline support (for stuff like up and down arrows to use previous commands n' stuff)

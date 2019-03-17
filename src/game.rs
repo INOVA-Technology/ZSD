@@ -1,5 +1,6 @@
 use std::process::exit;
 
+use crate::combo::Combo;
 use crate::player::Player;
 use crate::zombie::{Zombie, ZombieType};
 
@@ -32,6 +33,14 @@ impl<I: Iterator<Item=ZombieType>> Game<I> {
 
     pub fn punch(&mut self) {
         self.attack_zombie(self.player.punch());
+    }
+
+    pub fn combo(&mut self, combo: Combo) {
+        if let Some(dmg) = self.player.combo(combo) {
+            println!("You did a sick combo, -{} damage to the zombie", dmg);
+        } else {
+            println!("Not enough xp...");
+        }
     }
 
     fn attack_zombie(&mut self, dmg: u64) {

@@ -1,5 +1,6 @@
-// use rand::{Rng as _, thread_rng};
 use rand::{Rng, thread_rng};
+
+use crate::combo::Combo;
 
 pub struct Player {
     health: u64,
@@ -18,5 +19,10 @@ impl Player {
 
     pub fn punch(&self) -> u64 {
         thread_rng().gen_range(3, 5)
+    }
+
+    pub fn combo(&self, combo: Combo) -> Option<u64> {
+        // TODO: check if there's enough xp, return None if not
+        Some(combo.perform())
     }
 }

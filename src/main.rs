@@ -1,5 +1,6 @@
 use std::io::{self, Write};
 
+use zombie_smack_down::combo::Combo;
 use zombie_smack_down::game::Game;
 use zombie_smack_down::zombie::WAVES;
 
@@ -20,7 +21,13 @@ fn main() {
             "kick" | "k" => game.kick(),
             "punch" | "p" => game.punch(),
             "" => (),
-            _ => println!("Invalid command"),
+            _ => {
+                if let Some(c) = Combo::from_name(input) {
+                    game.combo(c);
+                } else {
+                    println!("Invalid command");
+                }
+            }
         }
 
         buffer.clear();
