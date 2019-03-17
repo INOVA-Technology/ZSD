@@ -3,6 +3,7 @@ use std::ops::Range;
 
 use rand::{Rng, thread_rng};
 
+#[derive(Clone)]
 pub struct ZombieType {
     health: Range<u64>,
     attack_power: Range<u64>,

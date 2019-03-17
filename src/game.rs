@@ -9,11 +9,11 @@ pub struct Game<I> {
     player: Player,
     current_zombie: Zombie,
     waves: I,
-    current_wave: &'static ZombieType,
+    current_wave: ZombieType,
     zombies_remaining_in_wave: u64,
 }
 
-impl<I: Iterator<Item=&'static ZombieType>> Game<I> {
+impl<I: Iterator<Item=ZombieType>> Game<I> {
     pub fn new(mut waves: I) -> Game<I> {
         let current_wave = waves.next().unwrap();
         let current_zombie = current_wave.make_zombie();

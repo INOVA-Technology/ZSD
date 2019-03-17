@@ -6,7 +6,7 @@ use zombie_smack_down::zombie::WAVES;
 fn main() {
     let mut buffer = String::new();
 
-    let mut game = Game::new(WAVES.iter());
+    let mut game = Game::new(WAVES.iter().cloned());
 
     loop {
         print!("> ");
