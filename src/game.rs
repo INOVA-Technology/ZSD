@@ -37,7 +37,8 @@ impl<I: Iterator<Item=ZombieType>> Game<I> {
 
     pub fn combo(&mut self, combo: Combo) {
         if let Some(dmg) = self.player.combo(combo) {
-            println!("You did a sick combo, -{} damage to the zombie", dmg);
+            println!("You did a sick combo.");
+            self.attack_zombie(dmg)
         } else {
             println!("Not enough xp...");
         }
@@ -47,39 +48,24 @@ impl<I: Iterator<Item=ZombieType>> Game<I> {
         let dmg_taken = self.current_zombie.take_damage(dmg);
         println!("The zombie took {} damage!", dmg_taken);
         if !self.current_zombie.is_alive() {
-            self.ko();
+            self.next_zombie();
         }
     }
 
-    fn ko(&mut self) {
-        println!("KO!");
-        self.next_zombie();
-    }
-
     fn next_zombie(&mut self) {
+        println!("KO!");
         if self.zombies_remaining_in_wave == 0 {
-            self.next_wave();
+            if let Some(wave) = self.waves.next() {
+                self.current_wave = wave;
+                self.zombies_remaining_in_wave = ZOMBIES_PER_WAVE;
+            } else {
+                println!("You win! Nice");
+                // TODO: don't exit here, but rather make a game status and set it to `Win` or something
+                exit(0);
+            }
         } else {
             self.current_zombie = self.current_wave.make_zombie();
             self.zombies_remaining_in_wave -= 1;
         }
-    }
-
-    fn next_wave(&mut self) {
-        match self.waves.next() {
-            Some(wave) => {
-                self.current_wave = wave;
-                self.zombies_remaining_in_wave = ZOMBIES_PER_WAVE;
-            },
-            None => {
-                self.win_game();
-            }
-        }
-    }
-
-    fn win_game(&self) {
-        println!("You win! Nice");
-        // TODO: don't exit here, but rather make a game status and set it to `Win` or something
-        exit(0);
     }
 }
