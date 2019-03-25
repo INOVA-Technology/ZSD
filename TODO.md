@@ -9,4 +9,3 @@
    - Add more
  - Add ability to upgrade kick and punch (and combos? Maybe not...)
  - Add a way to save/restore the game (~/.zsd_save?)
- - Readline support (for stuff like up and down arrows to use previous commands n' stuff)

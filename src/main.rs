@@ -1,21 +1,23 @@
-use std::io::{self, Write};
+use rustyline::Editor;
 
 use zombie_smack_down::combo::Combo;
 use zombie_smack_down::game::Game;
 use zombie_smack_down::zombie::WAVES;
 
 fn main() {
-    let mut buffer = String::new();
-
+    let mut rl = Editor::<()>::new();
     let mut game = Game::new(WAVES.iter().cloned());
 
     loop {
-        print!("> ");
-        io::stdout().flush().unwrap();
-
-        io::stdin().read_line(&mut buffer).expect("Failed to read line");
-        buffer.make_ascii_lowercase();
-        let input = buffer.trim();
+        let mut input = rl.readline("> ");
+        let input = match input {
+            Err(_) => break,
+            Ok(ref mut input) => {
+                rl.add_history_entry(&input[..]);
+                input.make_ascii_lowercase();
+                input.trim()
+            },
+        };
 
         match input {
             "kick" | "k" => game.kick(),
@@ -29,7 +31,5 @@ fn main() {
                 }
             }
         }
-
-        buffer.clear();
     }
 }
