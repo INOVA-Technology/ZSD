@@ -1,6 +1,6 @@
 use std::process::exit;
 
-use crate::color;
+use crate::{println_combat, println_warn, println_levelup};
 use crate::combo::Combo;
 use crate::player::Player;
 use crate::zombie::{Zombie, ZombieType};
@@ -41,26 +41,26 @@ impl<I: Iterator<Item=ZombieType>> Game<I> {
             println!("You did a sick combo.");
             self.attack_zombie(dmg)
         } else {
-            println!(color!(Yellow, "Not enough xp..."));
+            println_warn!("Not enough xp...");
         }
     }
 
     fn attack_zombie(&mut self, dmg: u64) {
         let dmg_taken = self.current_zombie.take_damage(dmg);
-        println!(color!(Red, "The zombie took {} damage!"), dmg_taken);
+        println_combat!("The zombie took {} damage!", dmg_taken);
         if !self.current_zombie.is_alive() {
             self.next_zombie();
         }
     }
 
     fn next_zombie(&mut self) {
-        println!(color!(Red, "KO!"));
+        println_combat!("KO!");
         if self.zombies_remaining_in_wave == 0 {
             if let Some(wave) = self.waves.next() {
                 self.current_wave = wave;
                 self.zombies_remaining_in_wave = ZOMBIES_PER_WAVE;
             } else {
-                println!(color!(Cyan, "You win! Nice"));
+                println_levelup!("You win! Nice");
                 // TODO: don't exit here, but rather make a game status and set it to `Win` or something
                 exit(0);
             }
