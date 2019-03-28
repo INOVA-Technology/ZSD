@@ -4,6 +4,7 @@ use crate::combo::Combo;
 
 pub struct Player {
     health: u64,
+    xp: u64,
 }
 
 impl Player {
@@ -24,5 +25,14 @@ impl Player {
     pub fn combo(&self, combo: Combo) -> Option<u64> {
         // TODO: check if there's enough xp, return None if not
         Some(combo.perform())
+    }
+
+    pub fn give_xp(&mut self, xp: u64) {
+        self.xp += xp;
+    }
+
+    pub fn take_xp(&mut self, xp: u64) {
+        let xp_taken = min(self.xp, xp);
+        self.xp -= xp;
     }
 }
