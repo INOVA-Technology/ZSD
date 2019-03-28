@@ -36,6 +36,6 @@ impl Player {
 
     pub fn take_xp(&mut self, xp: u64) {
         let xp_taken = cmp::min(self.xp, xp);
-        self.xp -= xp;
+        self.xp -= xp_taken;
     }
 }
