@@ -1,3 +1,5 @@
+use std::cmp;
+
 use rand::{Rng, thread_rng};
 
 use crate::combo::Combo;
@@ -11,6 +13,7 @@ impl Player {
     pub fn new() -> Player {
         Player {
             health: 20,
+            xp: 0,
         }
     }
 
@@ -32,7 +35,7 @@ impl Player {
     }
 
     pub fn take_xp(&mut self, xp: u64) {
-        let xp_taken = min(self.xp, xp);
+        let xp_taken = cmp::min(self.xp, xp);
         self.xp -= xp;
     }
 }
