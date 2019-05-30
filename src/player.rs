@@ -25,9 +25,13 @@ impl Player {
         thread_rng().gen_range(3, 5)
     }
 
-    pub fn combo(&self, combo: Combo) -> Option<u64> {
-        // TODO: check if there's enough xp, return None if not
-        Some(combo.perform())
+    pub fn combo(&mut self, combo: Combo) -> Option<u64> {
+        if self.xp >= combo.cost {
+            self.xp -= combo.cost;
+            Some(combo.perform())
+        } else {
+            None
+        }
     }
 
     pub fn give_xp(&mut self, xp: u64) {

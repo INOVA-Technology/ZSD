@@ -4,13 +4,14 @@ use rand::{Rng, thread_rng};
 
 pub struct Combo {
     power: Range<u64>,
+    pub cost: u64,
 }
 
 impl Combo {
     pub fn from_name(name: &str) -> Option<Combo> {
         let parts = &name.split_whitespace().collect::<Vec<_>>()[..];
         Some(match parts {
-            &["kick", "kick", "punch"] => Combo { power: 3..10 },
+            &["kick", "kick", "punch"] => Combo { power: 3..10, cost: 3 },
             _ => return None,
         })
     }
