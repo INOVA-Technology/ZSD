@@ -17,6 +17,10 @@ impl Player {
         }
     }
 
+    pub fn is_alive(&self) -> bool {
+        self.health > 0
+    }
+
     pub fn kick(&self) -> u64 {
         thread_rng().gen_range(4, 6)
     }
@@ -41,5 +45,9 @@ impl Player {
     pub fn take_xp(&mut self, xp: u64) {
         let xp_taken = cmp::min(self.xp, xp);
         self.xp -= xp_taken;
+    }
+
+    pub fn take_damage(&mut self, dmg: u64) {
+        self.health -= cmp::min(dmg, self.health);
     }
 }

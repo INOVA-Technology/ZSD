@@ -35,13 +35,15 @@ pub struct Zombie {
 }
 
 impl Zombie {
-    pub fn take_damage(&mut self, dmg: u64) -> u64 {
-        let dmg_taken = min(dmg, self.health);
-        self.health -= dmg_taken;
-        dmg_taken
+    pub fn take_damage(&mut self, dmg: u64) {
+        self.health -= min(dmg, self.health);
     }
 
     pub fn is_alive(&self) -> bool {
         self.health > 0
+    }
+
+    pub fn attack(&self) -> u64 {
+        thread_rng().gen_range(self.attack_power.start, self.attack_power.end)
     }
 }

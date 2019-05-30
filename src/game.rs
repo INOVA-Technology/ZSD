@@ -29,26 +29,34 @@ impl<I: Iterator<Item=ZombieType>> Game<I> {
     }
 
     pub fn kick(&mut self) {
-        self.attack_zombie(self.player.kick());
+        self.do_combat(self.player.kick());
     }
 
     pub fn punch(&mut self) {
-        self.attack_zombie(self.player.punch());
+        self.do_combat(self.player.punch());
     }
 
     pub fn combo(&mut self, combo: Combo) {
         if let Some(dmg) = self.player.combo(combo) {
             println!("You did a sick combo.");
-            self.attack_zombie(dmg)
+            self.do_combat(dmg)
         } else {
             println_warn!("Not enough xp...");
         }
     }
 
-    fn attack_zombie(&mut self, dmg: u64) {
-        let dmg_taken = self.current_zombie.take_damage(dmg);
-        println_combat!("The zombie took {} damage!", dmg_taken);
-        if !self.current_zombie.is_alive() {
+    fn do_combat(&mut self, dmg: u64) {
+        self.current_zombie.take_damage(dmg);
+        println_combat!("The zombie took {} damage!", dmg);
+        if self.current_zombie.is_alive() {
+            let dmg_taken = self.current_zombie.attack();
+            self.player.take_damage(dmg_taken);
+            println_combat!("The zombie hit you! -{} hp", dmg_taken);
+            if !self.player.is_alive() {
+                println_combat!("Oh no! You died... Game over.");
+                exit(1);
+            }
+        } else {
             self.next_zombie();
         }
     }
